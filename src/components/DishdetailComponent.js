@@ -153,7 +153,6 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
                 </Stagger>
             )
         })
-        </Stagger>
         return (
             <div className='col-12 col-md-5 m-1'>
                 <h4> Comments </h4>

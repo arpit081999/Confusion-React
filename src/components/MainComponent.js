@@ -8,7 +8,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import {postFeedback, postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -24,22 +24,20 @@ const mapStateToProps = state => {
   const mapDispatchToProps = dispatch => ({
   
     postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+    postFeedback: (firstname, lastname, telnum, email, agree, contactType, message) => { dispatch(postFeedback(firstname, lastname, telnum, email, agree, contactType, message)) },
     fetchDishes: () => { dispatch(fetchDishes())},
     resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
     fetchComments: () => dispatch(fetchComments()),
+    fetchLeaders: () => { dispatch(fetchLeaders()) },
     fetchPromos: () => dispatch(fetchPromos())
   });
 
 class Main extends Component {
 
-  constructor(props){
-    super(props);
-
-  }
-
   componentDidMount() {
     this.props.fetchDishes();
     this.props.fetchComments();
+    this.props.fetchLeaders();
     this.props.fetchPromos();
   }
 
@@ -48,13 +46,15 @@ class Main extends Component {
     const HomePage = () => {
         return(
             <Home 
-            dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
-            dishesLoading={this.props.dishes.isLoading}
-            dishesErrMess={this.props.dishes.errMess}
-            promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
-            promoLoading={this.props.promotions.isLoading}
-            promoErrMess={this.props.promotions.errMess}
-            leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+              dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
+              dishesLoading={this.props.dishes.isLoading}
+              dishesErrMess={this.props.dishes.errMess}
+              promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
+              promoLoading={this.props.promotions.isLoading}
+              promoErrMess={this.props.promotions.errMess}
+              leader={this.props.leaders.leaders.filter((leader) => leader.featured === true)[0]}
+              leaderLoading={this.props.leaders.isLoading}
+              leadersErrMess = {this.props.leaders.errMess}
             />
         );
       }
